@@ -1,5 +1,5 @@
 import joblib
-from models import Ad, IrisSpecies, Iris
+from models import AdType, Ad, IrisSpecies, Iris
 from fastapi import FastAPI
 
 description_md = """
@@ -43,17 +43,11 @@ async def root():
     return {"status": "up"}
 
 @app.post("/advertising/predict", tags=["Advertising"], description="Endpoint to serve Advertising predictions.")
-def predict_ads(request: Ad):
-    prediction = make_ads_prediction(ad_estimator_loaded, request.dict())
+def predict_ads(request: AdType):
+    model = Ad()
+    data = request.dict()
+    prediction = model.predict_ad(data['tv'], data['radio'], data['newspaper'])
     return {"prediction": prediction}
-
-def make_ads_prediction(model, request):
-    tv = request['tv']
-    radio = request['radio']
-    newspaper = request['newspaper']
-    ads = [[tv, radio, newspaper]]
-    prediction = model.predict(ads)
-    return prediction[0]
 
 @app.post("/iris/predict", tags=["Iris"], description="Predict the species of an Iris flower based on the provided sepal and petal heights and widths.")
 def predict_species(iris: IrisSpecies):
