@@ -1,4 +1,3 @@
-import joblib
 from models import AdType, Ad, IrisSpecies, Iris
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
