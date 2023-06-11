@@ -12,6 +12,7 @@ provider "docker" {
 
 resource "docker_image" "mlops-image-1" {
   name = "mlops-1:latest"
+  keep_locally = true
 }
 
 resource "docker_container" "mlops-container-1" {
