@@ -24,7 +24,7 @@ class IrisSpecies(BaseModel):
 
 class Iris:
     def __init__(self):
-        self.df = pd.read_csv("iris.csv")
+        self.df = pd.read_csv("datasets/iris.csv")
         self.model_fname_ = "saved_models/iris_randomforest.pkl"
         try:
             self.model = joblib.load(self.model_fname_)

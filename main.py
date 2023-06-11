@@ -9,6 +9,7 @@ This is an example stack to publish ML models using FastAPI, Docker, and Terrafo
 
 ## Endpoints
 - `/advertising/predict`: Endpoint to serve Advertising predictions.
+
 - `/iris/predict`: Endpoint to serve predictions on the species of Iris flower based on sepal and petal sizes.
 
 """
@@ -16,15 +17,15 @@ This is an example stack to publish ML models using FastAPI, Docker, and Terrafo
 tags_metadata = [
     {
         "name": "Home",
-        "description": "Home endpoints.",
+        "description": "Random endpoints.",
     },
     {
         "name": "Advertising",
-        "description": "Advertising endpoints.",
+        "description": "Endpoint to serve Advertising predictions.",
     },
         {
         "name": "Iris",
-        "description": "Iris endpoints.",
+        "description": "Endpoint to serve Iris predictions.",
     },
 ]
 
@@ -54,7 +55,7 @@ def make_ads_prediction(model, request):
     prediction = model.predict(ads)
     return prediction[0]
 
-@app.post("/iris/predict", tags=["Iris"], description="Endpoint to serve predictions on the species of Iris flower based on sepal and petal sizes.")
+@app.post("/iris/predict", tags=["Iris"], description="Predict the species of an Iris flower based on the provided sepal and petal heights and widths.")
 def predict_species(iris: IrisSpecies):
     model = Iris()
     data = iris.dict()

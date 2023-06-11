@@ -4,7 +4,7 @@ from sklearn.metrics import r2_score
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 
-df = pd.read_csv("advertising.csv")
+df = pd.read_csv("datasets/advertising.csv")
 print(df.head())
 
 X = df.iloc[:, 1:-1].values
