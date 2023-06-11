@@ -40,7 +40,7 @@ ad_estimator_loaded = joblib.load("saved_models/03.randomforest_with_advertising
 
 @app.get("/", tags=["Home"])
 async def root():
-    return {'status': 'up'}
+    return {'Greeting': 'Hello, thanks for visiting. Check out /docs 😁'}
 
 @app.post("/advertising/predict", tags=["Advertising"], description="Endpoint to serve Advertising predictions.")
 def predict_ads(request: AdType):
