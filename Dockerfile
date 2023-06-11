@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 RUN apt update
 RUN apt install -y python3
 RUN apt install -y python3-pip
