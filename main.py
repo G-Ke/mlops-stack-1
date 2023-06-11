@@ -1,6 +1,7 @@
 import joblib
 from models import AdType, Ad, IrisSpecies, Iris
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 
 description_md = """
 # MLOps Stack Test
@@ -36,11 +37,34 @@ app = FastAPI(
     openapi_tags=tags_metadata
 )
 
-ad_estimator_loaded = joblib.load("saved_models/03.randomforest_with_advertising.pkl")
+@app.get("/", tags=["Home"], response_class=HTMLResponse, description="A crude html page to welcome you to the API.")
+async def homepage():
+    return """
+    <html>
+        <head>
+            <title>MLOps Stack Test</title>
+        </head>
+        <body>
+            <h1>Welcome to the MLOps Stack Test</h1>
+            <div>
+                <h2>Swagger and Redocly Docs:</h2>
+                <ul>
+                    <li><a href="/docs">/docs</a></li>
+                    <li><a href="/redoc">/redoc</a></li>
+                </ul>
+            </div>
+        </body>
+    </html>
+    """
 
-@app.get("/", tags=["Home"])
-async def root():
-    return {'Greeting': 'Hello, thanks for visiting. Check out /docs 😁'}
+
+@app.get("/test", tags=["Home"], description="Test endpoint to check if the API is up and running.")
+async def test():
+    return {
+        'Greeting': 'Hello, thanks for visiting. Check out /docs 😁',
+        'Author': 'G-Ke',
+        'Purpose': 'This is an example stack to publish ML models using FastAPI, Docker, and Terraform. Check out the docs if you want to know more.'
+    }
 
 @app.post("/advertising/predict", tags=["Advertising"], description="Endpoint to serve Advertising predictions.")
 def predict_ads(request: AdType):
