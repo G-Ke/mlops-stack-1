@@ -40,14 +40,14 @@ ad_estimator_loaded = joblib.load("saved_models/03.randomforest_with_advertising
 
 @app.get("/", tags=["Home"])
 async def root():
-    return {"status": "up"}
+    return {'status': 'up'}
 
 @app.post("/advertising/predict", tags=["Advertising"], description="Endpoint to serve Advertising predictions.")
 def predict_ads(request: AdType):
     model = Ad()
     data = request.dict()
     prediction = model.predict_ad(data['tv'], data['radio'], data['newspaper'])
-    return {"prediction": prediction}
+    return {'prediction': prediction}
 
 @app.post("/iris/predict", tags=["Iris"], description="Predict the species of an Iris flower based on the provided sepal and petal heights and widths.")
 def predict_species(iris: IrisSpecies):
@@ -57,6 +57,6 @@ def predict_species(iris: IrisSpecies):
         data['sepal_length'], data['sepal_width'], data['petal_length'], data['petal_width']
     )
     return {
-        'predcition': prediction,
+        'prediction': prediction,
         'probability': probability
     }
