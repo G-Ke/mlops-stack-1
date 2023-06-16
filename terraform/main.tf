@@ -20,3 +20,7 @@ provider "aws" {
 resource "aws_ecr_repository" "mlops-1-ecr" {
     name = "mlops-stack-1"
 }
+
+resource "aws_ecs_cluster" "mlops-stack-1-ecs" {
+    name = "mlops-stack-1"
+}
