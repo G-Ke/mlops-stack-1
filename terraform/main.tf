@@ -52,7 +52,7 @@ resource "aws_ecs_task_definition" "mlops-1-task" {
 }
 
 resource "aws_iam_role" "ecsTaskExecutionRole" {
-    name = "ecsTaskExecutionRole"
+    name = "ecsTaskExecutionRole-MLOps"
     assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
 }
 
