@@ -136,7 +136,7 @@ resource "aws_ecs_service" "mlops-1-service" {
 
     load_balancer {
         target_group_arn = "${aws_lb_target_group.target_group.arn}"
-        container_name = "${aws_ecs_task_cluster_def.mlops-1-task.family}"
+        container_name = "${aws_ecs_task_definition.mlops-1-task.family}"
         container_port = 80
     }
 
@@ -164,5 +164,5 @@ resource "aws_security_group" "ecs_service_security_group" {
 }
 
 output "mlops-stack-url" {
-    value = aws_lb.application_load_balancer.dns_name
+    value = aws_alb.application_load_balancer.dns_name
 }
