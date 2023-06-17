@@ -35,8 +35,8 @@ resource "aws_ecs_task_definition" "mlops-1-task" {
             "essential": true,
             "portMappings": [
                 {
-                    "containerPort": 8000,
-                    "hostPort": 8000
+                    "containerPort": 5000,
+                    "hostPort": 5000
                 }
             ],
             "memory": 512,
@@ -96,7 +96,7 @@ resource "aws_alb" "application_load_balancer" {
 resource "aws_security_group" "load_balancer_security_group" {
     ingress {
         from_port = 80
-        to_port = 8000
+        to_port = 80
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
     }
@@ -137,7 +137,7 @@ resource "aws_ecs_service" "mlops-1-service" {
     load_balancer {
         target_group_arn = "${aws_lb_target_group.target_group.arn}"
         container_name = "${aws_ecs_task_definition.mlops-1-task.family}"
-        container_port = 80
+        container_port = 5000
     }
 
     network_configuration {
