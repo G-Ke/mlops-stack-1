@@ -25,7 +25,7 @@ resource "aws_ecs_cluster" "mlops-stack-1-ecs" {
     name = "mlops-stack-1"
 }
 
-resource "aws_ecs_task_cluster_def" "mlops-1-task" {
+resource "aws_ecs_task_definition" "mlops-1-task" {
     family = "mlops-1-task"
     container_definitions = <<DEFINITION
     [
@@ -83,7 +83,7 @@ resource "aws_default_subnet" "default_subnet_b" {
     availability_zone = "us-east-1b"
 }
 
-resource "aws_elb" "application_load_balancer" {
+resource "aws_alb" "application_load_balancer" {
     name = "mlops-load-balancer"
     load_balancer_type = "application"
     subnets = [
@@ -109,7 +109,7 @@ resource "aws_security_group" "load_balancer_security_group" {
     }
 }
 
-resource "aws_elb_target_group" "target_group" {
+resource "aws_lb_target_group" "target_group" {
     name = "mlops-target-group"
     port = 80
     protocol = "HTTP"
@@ -117,25 +117,25 @@ resource "aws_elb_target_group" "target_group" {
     vpc_id = "${aws_default_vpc.default_vpc.id}"
 }
 
-resource "aws_elb_listener" "listener" {
+resource "aws_lb_listener" "listener" {
     load_balancer_arn = "${aws_alb.application_load_balancer.arn}"
     port = "80"
     protocol = "HTTP"
     default_action {
         type = "forward"
-        target_group_arn = "${aws_elb_target_group.target_group.arn}"
+        target_group_arn = "${aws_lb_target_group.target_group.arn}"
     }
 }
 
 resource "aws_ecs_service" "mlops-1-service" {
     name = "mlops-1-service"
     cluster = "${aws_ecs_cluster.mlops-stack-1-ecs.id}"
-    task_definition = "${aws_ecs_task_cluster_def.mlops-1-task.family}"
+    task_definition = "${aws_ecs_task_definition.mlops-1-task.family}"
     launch_type = "FARGATE"
     desired_count = 3
 
     load_balancer {
-        target_group_arn = "${aws_elb_target_group.target_group.arn}"
+        target_group_arn = "${aws_lb_target_group.target_group.arn}"
         container_name = "${aws_ecs_task_cluster_def.mlops-1-task.family}"
         container_port = 80
     }
