@@ -31,7 +31,7 @@ resource "aws_ecs_task_definition" "mlops-1-task" {
     [
         {
             "name": "mlops-1-task",
-            "image": "${aws_ecr_repository.app_ecr_repo.repository_url}",
+            "image": "${aws_ecr_repository.mlops-1-ecr.repository_url}",
             "essential": true,
             "portMappings": [
                 {
@@ -164,5 +164,5 @@ resource "aws_security_group" "ecs_service_security_group" {
 }
 
 output "mlops-stack-url" {
-    value = aws_elb.application_load_balancer.dns_name
+    value = aws_lb.application_load_balancer.dns_name
 }
