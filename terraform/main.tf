@@ -36,7 +36,7 @@ resource "aws_ecs_task_definition" "mlops-1-task" {
             "portMappings": [
                 {
                     "containerPort": 8000,
-                    "hostPort": 80
+                    "hostPort": 8000
                 }
             ],
             "memory": 512,
