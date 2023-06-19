@@ -40,7 +40,13 @@ resource "aws_ecs_task_definition" "mlops-1-task" {
                 }
             ],
             "memory": 512,
-            "cpu": 256
+            "cpu": 256,
+            "command": [
+                "uvicorn",
+                "main:app",
+                "--host=0.0.0.0",
+                "--port=80"
+            ],
         }
     ]
     DEFINITION
