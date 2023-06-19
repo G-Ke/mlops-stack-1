@@ -40,13 +40,7 @@ resource "aws_ecs_task_definition" "mlops-1-task" {
                 }
             ],
             "memory": 512,
-            "cpu": 256,
-            "command": [
-                "uvicorn",
-                "main:app",
-                "--host=0.0.0.0",
-                "--port=80"
-            ]
+            "cpu": 256
         }
     ]
     DEFINITION
@@ -78,40 +72,23 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRolePolicy" {
     policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-#resource "aws_default_vpc" "default_vpc" {
-#}
-
-resource "aws_vpc" "MLOps-VPC" {
-    vpc_id = "vpc-0f6112e3076722cd2"
+resource "aws_default_vpc" "default_vpc" {
 }
 
-#resource "aws_default_subnet" "default_subnet_a" {
-#    availability_zone = "us-east-1a"
-#}
-
-#resource "aws_default_subnet" "default_subnet_b" {
-#    availability_zone = "us-east-1b"
-#}
-
-resource "aws_subnet" "MLOps-Subnet" {
-    subnet_id = "subnet-05c0b9bd378f24642"
+resource "aws_default_subnet" "default_subnet_a" {
+    availability_zone = "us-east-1a"
 }
 
-#resource "aws_alb" "application_load_balancer" {
-#    name = "mlops-load-balancer"
-#    load_balancer_type = "application"
-#    subnets = [
-#        "${aws_default_subnet.default_subnet_a.id}",
-#        "${aws_default_subnet.default_subnet_b.id}"
-#    ]
-#    security_groups = ["${aws_security_group.load_balancer_security_group.id}"]
-#}
+resource "aws_default_subnet" "default_subnet_b" {
+    availability_zone = "us-east-1b"
+}
 
 resource "aws_alb" "application_load_balancer" {
     name = "mlops-load-balancer"
     load_balancer_type = "application"
     subnets = [
-        "${aws_subnet.MLOps-Subnet.id}"
+        "${aws_default_subnet.default_subnet_a.id}",
+        "${aws_default_subnet.default_subnet_b.id}"
     ]
     security_groups = ["${aws_security_group.load_balancer_security_group.id}"]
 }
@@ -137,7 +114,7 @@ resource "aws_lb_target_group" "target_group" {
     port = 80
     protocol = "HTTP"
     target_type = "ip"
-    vpc_id = "${aws_vpc.default_vpc.id}"
+    vpc_id = "${aws_default_vpc.default_vpc.id}"
 }
 
 resource "aws_lb_listener" "listener" {
@@ -155,7 +132,7 @@ resource "aws_ecs_service" "mlops-1-service" {
     cluster = "${aws_ecs_cluster.mlops-stack-1-ecs.id}"
     task_definition = "${aws_ecs_task_definition.mlops-1-task.family}"
     launch_type = "FARGATE"
-    desired_count = 1
+    desired_count = 3
 
     load_balancer {
         target_group_arn = "${aws_lb_target_group.target_group.arn}"
