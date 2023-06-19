@@ -54,28 +54,7 @@ resource "aws_ecs_task_definition" "mlops-1-task" {
     network_mode = "awsvpc"
     memory = 512
     cpu = 256
-    execution_role_arn = "${aws_iam_role.ecsTaskExecutionRole.arn}"
-}
-
-resource "aws_iam_role" "ecsTaskExecutionRole" {
-    name = "ecsTaskExecutionRole"
-    assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
-}
-
-data "aws_iam_policy_document" "assume_role_policy" {
-    statement {
-        actions = ["sts:AssumeRole"]
-
-        principals {
-            type = "Service"
-            identifiers = ["ecs-tasks.amazonaws.com"]
-        }
-    }
-}
-
-resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRolePolicy" {
-    role = "${aws_iam_role.ecsTaskExecutionRole.name}"
-    policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+    execution_role_arn = "arn:aws:iam::343725977869:role/ecsTaskExecutionRole"
 }
 
 resource "aws_default_vpc" "default_vpc" {
@@ -138,7 +117,7 @@ resource "aws_ecs_service" "mlops-1-service" {
     cluster = "${aws_ecs_cluster.mlops-stack-1-ecs.id}"
     task_definition = "${aws_ecs_task_definition.mlops-1-task.family}"
     launch_type = "FARGATE"
-    desired_count = 3
+    desired_count = 2
 
     load_balancer {
         target_group_arn = "${aws_lb_target_group.target_group.arn}"
