@@ -2,7 +2,7 @@ terraform {
     cloud {
         organization = "g-ke"
         workspaces {
-            name = "mlops-stack-1"
+            name = "mlops-stack"
         }
     }
     required_providers {
@@ -35,12 +35,18 @@ resource "aws_ecs_task_definition" "mlops-1-task" {
             "essential": true,
             "portMappings": [
                 {
-                    "containerPort": 8000,
-                    "hostPort": 8000
+                    "containerPort": 80,
+                    "hostPort": 80
                 }
             ],
             "memory": 512,
-            "cpu": 256
+            "cpu": 256,
+            "command": [
+                "uvicorn",
+                "main:app",
+                "--host=0.0.0.0",
+                "--port=80"
+            ]
         }
     ]
     DEFINITION
@@ -52,7 +58,7 @@ resource "aws_ecs_task_definition" "mlops-1-task" {
 }
 
 resource "aws_iam_role" "ecsTaskExecutionRole" {
-    name = "ecsTaskExecutionRole-MLOps"
+    name = "ecsTaskExecutionRole"
     assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
 }
 
@@ -72,23 +78,40 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRolePolicy" {
     policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-resource "aws_default_vpc" "default_vpc" {
+#resource "aws_default_vpc" "default_vpc" {
+#}
+
+resource "aws_vpc" "MLOps-VPC" {
+    vpc_id = "vpc-0f6112e3076722cd2"
 }
 
-resource "aws_default_subnet" "default_subnet_a" {
-    availability_zone = "us-east-1a"
+#resource "aws_default_subnet" "default_subnet_a" {
+#    availability_zone = "us-east-1a"
+#}
+
+#resource "aws_default_subnet" "default_subnet_b" {
+#    availability_zone = "us-east-1b"
+#}
+
+resource "aws_subnet" "MLOps-Subnet" {
+    subnet_id = "subnet-05c0b9bd378f24642"
 }
 
-resource "aws_default_subnet" "default_subnet_b" {
-    availability_zone = "us-east-1b"
-}
+#resource "aws_alb" "application_load_balancer" {
+#    name = "mlops-load-balancer"
+#    load_balancer_type = "application"
+#    subnets = [
+#        "${aws_default_subnet.default_subnet_a.id}",
+#        "${aws_default_subnet.default_subnet_b.id}"
+#    ]
+#    security_groups = ["${aws_security_group.load_balancer_security_group.id}"]
+#}
 
 resource "aws_alb" "application_load_balancer" {
     name = "mlops-load-balancer"
     load_balancer_type = "application"
     subnets = [
-        "${aws_default_subnet.default_subnet_a.id}",
-        "${aws_default_subnet.default_subnet_b.id}"
+        "${aws_subnet.MLOps-Subnet.id}"
     ]
     security_groups = ["${aws_security_group.load_balancer_security_group.id}"]
 }
@@ -114,7 +137,7 @@ resource "aws_lb_target_group" "target_group" {
     port = 80
     protocol = "HTTP"
     target_type = "ip"
-    vpc_id = "${aws_default_vpc.default_vpc.id}"
+    vpc_id = "${aws_vpc.default_vpc.id}"
 }
 
 resource "aws_lb_listener" "listener" {
@@ -132,12 +155,12 @@ resource "aws_ecs_service" "mlops-1-service" {
     cluster = "${aws_ecs_cluster.mlops-stack-1-ecs.id}"
     task_definition = "${aws_ecs_task_definition.mlops-1-task.family}"
     launch_type = "FARGATE"
-    desired_count = 3
+    desired_count = 1
 
     load_balancer {
         target_group_arn = "${aws_lb_target_group.target_group.arn}"
         container_name = "${aws_ecs_task_definition.mlops-1-task.family}"
-        container_port = 8000
+        container_port = 80
     }
 
     network_configuration {
