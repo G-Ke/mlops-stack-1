@@ -17,7 +17,7 @@ provider "aws" {
     region = "us-east-1"
 }
 
-resource "aws_ecr_repository" "mlops-1-ecr" {
+resource "aws_ecr_repository" "mlops-ecr" {
     name = "mlops-stack-1"
 }
 
@@ -31,7 +31,7 @@ resource "aws_ecs_task_definition" "mlops-1-task" {
     [
         {
             "name": "mlops-1-task",
-            "image": "${aws_ecr_repository.mlops-1-ecr.repository_url}",
+            "image": "${aws_ecr_repository.mlops-ecr.repository_url}",
             "essential": true,
             "portMappings": [
                 {
@@ -117,7 +117,7 @@ resource "aws_ecs_service" "mlops-1-service" {
     cluster = "${aws_ecs_cluster.mlops-stack-1-ecs.id}"
     task_definition = "${aws_ecs_task_definition.mlops-1-task.family}"
     launch_type = "FARGATE"
-    desired_count = 2
+    desired_count = 1
 
     load_balancer {
         target_group_arn = "${aws_lb_target_group.target_group.arn}"
