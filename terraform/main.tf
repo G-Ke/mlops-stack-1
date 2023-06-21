@@ -96,7 +96,14 @@ resource "aws_network_acl" "mlops-stack-VPC-nacl" {
         cidr_block = "0.0.0.0/0"
         from_port  = 42
         to_port    = 42
-    }  
+    } 
+
+    egress {
+        protocol   = "-1"
+        rule_no    = 100
+        action     = "allow"
+        cidr_block = "0.0.0.0/0"
+    }
 
     tags = {
         Project = "MLOps-Stack"
