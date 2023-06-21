@@ -168,7 +168,7 @@ resource "aws_ecs_service" "mlops-stack-ecs-service" {
     desired_count = 1
     launch_type = "FARGATE"
     capacity_provider_strategy {
-        capacity_provider = "ecs-capacity-provider-mlops-stack"
+        capacity_provider = "mlops-stack-ecs-cp"
         weight = 100
     }
     load_balancer {
@@ -208,7 +208,7 @@ resource "aws_lb_listener" "mlops-stack-alb-listener" {
 
 resource "aws_lb_target_group" "mlops-stack-alb-tg" {
     name = "MLOps-Stack-ALB-TG"
-    target_type = "alb"
+    target_type = "instance"
     port = 80
     protocol = "TCP"
     vpc_id = module.vpc.vpc_id
