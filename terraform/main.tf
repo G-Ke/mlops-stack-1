@@ -103,6 +103,8 @@ resource "aws_network_acl" "mlops-stack-VPC-nacl" {
         rule_no    = 100
         action     = "allow"
         cidr_block = "0.0.0.0/0"
+        from_port  = "-1"
+        to_port    = "-1"
     }
 
     tags = {
