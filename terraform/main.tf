@@ -168,7 +168,7 @@ resource "aws_ecs_service" "mlops-stack-ecs-service" {
     desired_count = 1
     launch_type = "FARGATE"
     capacity_provider_strategy {
-        capacity_provider = aws_ecs_cluster_capacity_providers.mlops-stack-ecs-cp.id
+        capacity_provider = aws_ecs_cluster_capacity_providers.mlops-stack-ecs-cp
         weight = 100
     }
     load_balancer {
@@ -194,7 +194,7 @@ resource "aws_lb" "mlops-stack-alb" {
 resource "aws_lb_listener" "mlops-stack-alb-listener" {
     load_balancer_arn = aws_lb.mlops-stack-alb.arn
     port = "80"
-    protocol = "HTTP"
+    protocol = "TCP"
     default_action {
         type = "forward"
         forward {
