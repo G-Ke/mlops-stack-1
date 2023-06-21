@@ -55,7 +55,68 @@ resource "aws_security_group" "mlops-stack-VPC-sg" {
 }
 
 resource "aws_network_acl" "mlops-stack-VPC-nacl" {
-    name = "MLOps-Stack-VPC-nacl"
+    vpc_id = module.vpc.vpc_id
+
+    ingress {
+        protocol   = "tcp"
+        rule_no    = 100
+        action     = "allow"
+        cidr_block = "0.0.0.0/0"
+        from_port  = 80
+        to_port    = 80
+    }
+
+    ingress {
+        protocol   = "tcp"
+        rule_no    = 200
+        action     = "allow"
+        cidr_block = "0.0.0.0/0"
+        from_port  = 443
+        to_port    = 443
+    }
+
+    ingress {
+        protocol   = "tcp"
+        rule_no    = 300
+        action     = "allow"
+        cidr_block = "0.0.0.0/0"
+        from_port  = 53
+        to_port    = 53
+    }
+
+    ingress {
+        protocol   = "udp"
+        rule_no    = 400
+        action     = "allow"
+        cidr_block = "0.0.0.0/0"
+        from_port  = 53
+        to_port    = 53
+    }    
+
+    ingress {
+        protocol   = "tcp"
+        rule_no    = 500
+        action     = "allow"
+        cidr_block = "0.0.0.0/0"
+        from_port  = 42
+        to_port    = 42
+    } 
+
+    egress {
+        protocol   = "-1"
+        rule_no    = 100
+        action     = "allow"
+        cidr_block = "0.0.0.0/0"
+        from_port  = "0"
+        to_port    = "0"
+    }
+
+    tags = {
+        Project = "MLOps-Stack"
+    }
+}
+
+resource "aws_default_network_acl" "default" {
     vpc_id = module.vpc.vpc_id
 
     ingress {
