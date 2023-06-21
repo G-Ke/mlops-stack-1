@@ -186,7 +186,7 @@ resource "aws_ecs_service" "mlops-stack-ecs-service" {
 resource "aws_lb" "mlops-stack-alb" {
     name = "MLOps-Stack-ALB"
     internal = false
-    load_balancer_type = "application"
+    load_balancer_type = "network"
     security_groups = [aws_security_group.mlops-stack-VPC-sg.id]
     subnets = module.vpc.public_subnets
 }
