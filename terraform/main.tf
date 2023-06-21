@@ -21,6 +21,7 @@ module "vpc" {
     source = "terraform-aws-modules/vpc/aws"
     name               = "MLOps-Stack-VPC"
     cidr               = "10.0.0.0/22"
+    default_network_acl_id = "acl-01be051a12f755913"
     azs                = ["us-east-1a", "us-east-1d"]
     private_subnets    = ["10.0.2.0/26", "10.0.2.64/26"]
     public_subnets     = ["10.0.0.0/26", "10.0.0.64/26"]
@@ -118,6 +119,7 @@ resource "aws_network_acl" "mlops-stack-VPC-nacl" {
 
 resource "aws_default_network_acl" "default" {
     vpc_id = module.vpc.vpc_id
+    default_network_acl_id = module.vpc.default_network_acl_id
 
     ingress {
         protocol   = "tcp"
