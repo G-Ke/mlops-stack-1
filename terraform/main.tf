@@ -48,9 +48,14 @@ resource "aws_security_group" "mlops-stack-VPC-sg" {
         protocol = "-1"
         cidr_blocks = ["0.0.0.0/0"]
     }
+
+    tags = {
+        Project = "MLOps-Stack"
+    }
 }
 
 resource "aws_network_acl" "mlops-stack-VPC-nacl" {
+    name = "MLOps-Stack-VPC-nacl"
     vpc_id = module.vpc.vpc_id
 
     ingress {
