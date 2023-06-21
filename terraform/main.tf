@@ -209,7 +209,6 @@ resource "aws_lb_listener" "mlops-stack-alb-listener" {
 resource "aws_lb_target_group" "mlops-stack-alb-tg" {
     name = "MLOps-Stack-ALB-TG"
     port = 80
-    protocol = "HTTP"
     target_type = "alb"
     vpc_id = module.vpc.vpc_id
 }
