@@ -168,7 +168,7 @@ resource "aws_ecs_service" "mlops-stack-ecs-service" {
     desired_count = 1
     launch_type = "FARGATE"
     capacity_provider_strategy {
-        capacity_provider = "MLOps-Stack-ecs-cp"
+        capacity_provider = aws_ecs_cluster_capacity_providers.MLOps-Stack-ecs-cp.arn
         weight = 100
     }
     load_balancer {
@@ -215,7 +215,7 @@ resource "aws_lb_target_group" "mlops-stack-alb-tg" {
 }
 
 resource "aws_lb_target_group_attachment" "mlops-stack-lb-tga" {
-    target_group_arn = aws_lb_target_group.mlops-stack-alb-tg.arn
+    target_group_arn = aws_lb.mlops-stack-alb.arn
     target_id = aws_lb.mlops-stack-alb.dns_name
     port = 80
 }
