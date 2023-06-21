@@ -63,8 +63,8 @@ module "vpc" {
     name               = "MLOps-Stack-2-vpc"
     cidr               = "10.0.0.0/22"
     azs                = ["us-east-1a", "us-east-1d"]
-    private_subnets    = ["10.0.8.0/22", "10.0.9.0/22"]
-    public_subnets     = ["10.0.0.0/22", "10.0.2.0/22"]
+    private_subnets    = ["10.0.8.0/22"]
+    public_subnets     = ["10.0.0.0/22"]
     enable_nat_gateway = true
     enable_vpn_gateway = false
     enable_ipv6        = false
