@@ -168,7 +168,7 @@ resource "aws_ecs_service" "mlops-stack-ecs-service" {
     desired_count = 1
     launch_type = "FARGATE"
     capacity_provider_strategy {
-        capacity_provider = aws_ecs_cluster_capacity_providers.mlops-stack-ecs-cp
+        capacity_provider = [aws_ecs_cluster_capacity_providers.mlops-stack-ecs-cp]
         weight = 100
     }
     load_balancer {
@@ -188,7 +188,7 @@ resource "aws_lb" "mlops-stack-alb" {
     internal = false
     load_balancer_type = "application"
     security_groups = [aws_security_group.mlops-stack-VPC-sg.id]
-    subnets = [for subnet in module.vpc.public_subnets : subnet.id]
+    subnets = module.vpc.public_subnets
 }
 
 resource "aws_lb_listener" "mlops-stack-alb-listener" {
