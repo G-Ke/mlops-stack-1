@@ -117,7 +117,6 @@ resource "aws_network_acl" "mlops-stack-VPC-nacl" {
 }
 
 resource "aws_default_network_acl" "default" {
-    vpc_id = module.vpc.vpc_id
     default_network_acl_id = "acl-01be051a12f755913"
 
     ingress {
