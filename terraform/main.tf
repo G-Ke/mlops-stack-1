@@ -168,7 +168,7 @@ resource "aws_ecs_service" "mlops-stack-ecs-service" {
     desired_count = 1
     launch_type = "FARGATE"
     capacity_provider_strategy {
-        capacity_provider = aws_ecs_cluster_capacity_providers.mlops-stack-ecs-cp.arn
+        capacity_provider = aws_ecs_cluster_capacity_providers.mlops-stack-ecs-cp
         weight = 100
     }
     load_balancer {
