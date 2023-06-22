@@ -183,7 +183,6 @@ resource "aws_lb" "mlops-stack-alb" {
     name = "MLOps-Stack-ALB"
     internal = false
     load_balancer_type = "network"
-    security_groups = [aws_security_group.mlops-stack-VPC-sg.id]
     subnets = module.vpc.public_subnets
 }
 
@@ -204,7 +203,7 @@ resource "aws_lb_listener" "mlops-stack-alb-listener" {
 
 resource "aws_lb_target_group" "mlops-stack-alb-tg" {
     name = "MLOps-Stack-ALB-TG"
-    target_type = "instance"
+    target_type = "ip"
     port = 80
     protocol = "TCP"
     vpc_id = module.vpc.vpc_id
