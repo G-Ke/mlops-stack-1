@@ -189,7 +189,7 @@ resource "aws_lb" "mlops-stack-alb" {
 resource "aws_lb_listener" "mlops-stack-alb-listener" {
     load_balancer_arn = aws_lb.mlops-stack-alb.arn
     port = "80"
-    protocol = "HTTP"
+    protocol = "TCP"
     default_action {
         type = "forward"
         forward {
