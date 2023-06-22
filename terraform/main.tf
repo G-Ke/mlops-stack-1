@@ -167,10 +167,6 @@ resource "aws_ecs_service" "mlops-stack-ecs-service" {
     task_definition = aws_ecs_task_definition.mlops-stack-taskdef.arn
     desired_count = 1
     launch_type = "FARGATE"
-    capacity_provider_strategy {
-        capacity_provider = "${aws_ecs_cluster_capacity_providers.mlops-stack-ecs-cp}"
-        weight = 100
-    }
     load_balancer {
         target_group_arn = aws_lb_target_group.mlops-stack-alb-tg.arn
         container_name   = "MLOps-Stack"
