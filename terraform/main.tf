@@ -207,8 +207,3 @@ resource "aws_lb_target_group" "mlops-stack-alb-tg" {
     protocol = "TCP"
     vpc_id = module.vpc.vpc_id
 }
-
-resource "aws_lb_target_group_attachment" "mlops-stack-lb-tga" {
-    target_group_arn = aws_lb_target_group.mlops-stack-alb-tg.arn
-    port = 80
-}
