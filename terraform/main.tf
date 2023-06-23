@@ -210,6 +210,6 @@ resource "aws_lb_target_group" "mlops-stack-alb-tg" {
 
 resource "aws_lb_target_group_attachment" "mlops-stack-lb-tga" {
     target_group_arn = aws_lb_target_group.mlops-stack-alb-tg.arn
-    target_id = aws_lb.mlops-stack-alb.dns_name
+    target_id = aws_lb.mlops-stack-alb.ip_address
     port = 80
 }
