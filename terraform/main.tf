@@ -55,7 +55,7 @@ resource "aws_security_group" "mlops-stack-VPC-sg" {
 }
 
 resource "aws_default_network_acl" "default" {
-    default_network_acl_id = "acl-01be051a12f755913"
+    default_network_acl_id = "${module.vpc.default_network_acl_id}"
 
     ingress {
         protocol   = "tcp"
