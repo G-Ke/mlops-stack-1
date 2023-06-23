@@ -2,7 +2,7 @@ terraform {
     cloud {
         organization = "g-ke"
         workspaces {
-            name = "mlops-stack"
+            name = "MLOps"
         }
     }
     required_providers {
@@ -121,7 +121,7 @@ resource "aws_ecs_cluster" "mlops-stack-ecs" {
 }
 
 resource "aws_ecs_cluster_capacity_providers" "mlops-stack-ecs-cp" {
-    cluster_name = aws_ecs_cluster.mlops-stack-ecs.name
+    cluster_name = "${aws_ecs_cluster.mlops-stack-ecs.name}"
     capacity_providers = ["FARGATE"]
     default_capacity_provider_strategy {
         base              = 1
@@ -164,18 +164,18 @@ resource "aws_ecs_task_definition" "mlops-stack-taskdef" {
 resource "aws_ecs_service" "mlops-stack-ecs-service" {
     name = "MLOps-Stack-Service"
     cluster = aws_ecs_cluster.mlops-stack-ecs.id
-    task_definition = aws_ecs_task_definition.mlops-stack-taskdef.arn
+    task_definition = "${aws_ecs_task_definition.mlops-stack-taskdef.arn}"
     desired_count = 1
     launch_type = "FARGATE"
     load_balancer {
-        target_group_arn = aws_lb_target_group.mlops-stack-alb-tg.arn
+        target_group_arn = "${aws_lb_target_group.mlops-stack-alb-tg.arn}"
         container_name   = "MLOps-Stack"
         container_port   = 80
     }
     network_configuration {
         assign_public_ip = true
         subnets = module.vpc.public_subnets
-        security_groups = [aws_security_group.mlops-stack-VPC-sg.id]
+        security_groups = ["${aws_security_group.mlops-stack-VPC-sg.id}"]
     }
 }
 
@@ -187,7 +187,7 @@ resource "aws_lb" "mlops-stack-alb" {
 }
 
 resource "aws_lb_listener" "mlops-stack-alb-listener" {
-    load_balancer_arn = aws_lb.mlops-stack-alb.arn
+    load_balancer_arn = "${aws_lb.mlops-stack-alb.arn}"
     port = "80"
     protocol = "TCP"
     default_action {
