@@ -139,7 +139,7 @@ resource "aws_ecs_task_definition" "mlops-stack-taskdef" {
     [
         {
             "name": "MLOps-Stack",
-            "image": "${var.ecr_image}",
+            "image": "343725977869.dkr.ecr.us-east-1.amazonaws.com/mlops-stack-1",
             "essential": true,
             "portMappings": [
                 {
