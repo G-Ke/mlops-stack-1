@@ -2,7 +2,7 @@ terraform {
     cloud {
         organization = "g-ke"
         workspaces {
-            name = "MLOps"
+            name = "mlops-stack-1"
         }
     }
     required_providers {
