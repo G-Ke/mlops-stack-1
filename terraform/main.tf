@@ -29,7 +29,7 @@ module "vpc" {
   enable_dns_hostnames = true
   enable_ipv6          = false
   tags = {
-    {var.tag_key} = {var.tag_value}
+    Project = MLOps-Stack
   }
 }
 
@@ -50,7 +50,7 @@ resource "aws_security_group" "mlops-stack-VPC-sg" {
   }
 
   tags = {
-    {var.tag_key} = {var.tag_value}
+    Project = MLOps-Stack
   }
 }
 
@@ -112,7 +112,7 @@ resource "aws_default_network_acl" "default" {
   }
 
   tags = {
-    {var.tag_key} = {var.tag_value}
+    Project = MLOps-Stack
   }
 }
 
@@ -133,7 +133,7 @@ resource "aws_ecs_cluster_capacity_providers" "mlops-stack-ecs-cp" {
 resource "aws_ecs_task_definition" "mlops-stack-taskdef" {
   family = "MLOps-Stack"
   tags = {
-    {var.tag_key} = {var.tag_value}
+    Project = MLOps-Stack
   }
   container_definitions    = <<DEFINITION
     [
@@ -175,7 +175,7 @@ resource "aws_ecs_service" "mlops-stack-ecs-service" {
     security_groups  = ["${aws_security_group.mlops-stack-VPC-sg.id}"]
   }
   tags = {
-    {var.tag_key} = {var.tag_value}
+    Project = MLOps-Stack
   }
 }
 
@@ -185,7 +185,7 @@ resource "aws_lb" "mlops-stack-alb" {
   load_balancer_type = "network"
   subnets            = module.vpc.public_subnets
   tags = {
-    {var.tag_key} = {var.tag_value}
+    Project = MLOps-Stack
   }
 }
 
@@ -198,7 +198,7 @@ resource "aws_lb_listener" "mlops-stack-alb-listener" {
     target_group_arn = aws_lb_target_group.mlops-stack-alb-tg.arn
   }
   tags = {
-    {var.tag_key} = {var.tag_value}
+    Project = MLOps-Stack
   }
 }
 
@@ -209,6 +209,6 @@ resource "aws_lb_target_group" "mlops-stack-alb-tg" {
   protocol    = "TCP"
   vpc_id      = module.vpc.vpc_id
   tags = {
-    {var.tag_key} = {var.tag_value}
+    Project = MLOps-Stack
   }
 }

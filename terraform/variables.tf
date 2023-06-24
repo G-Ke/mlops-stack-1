@@ -16,18 +16,6 @@ variable "region" {
   description = "AWS Region"
 }
 
-variable "tag_value" {
-  type        = string
-  default     = "MLOps-Stack"
-  description = "Tag Value"
-}
-
-variable "tag_key" {
-  type        = string
-  default     = "Project"
-  description = "Tag Key"
-}
-
 variable "ecr_image" {
   type        = string
   default     = ""
