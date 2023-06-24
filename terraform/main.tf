@@ -143,12 +143,6 @@ resource "aws_ecs_task_definition" "mlops-stack-taskdef" {
                     "containerPort": 80,
                     "hostPort": 80
                 }
-            ],
-            "command": [
-                "uvicorn",
-                "main:app",
-                "--host=0.0.0.0",
-                "--port=80"
             ]
         }
     ]
