@@ -209,6 +209,6 @@ resource "aws_lb_target_group" "mlops-stack-alb-tg" {
   protocol    = "TCP"
   vpc_id      = module.vpc.vpc_id
   tags = {
-    var.tag_key = var.tag_value
+    "${var.tag_key}" = "${var.tag_value}"
   }
 }
